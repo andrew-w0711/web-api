@@ -1,0 +1,88 @@
+<H3>SCTP Instance <i>international</i></H3>
+
+<h4>SCTP Objects:</h4>
+<table class="t_table">
+  <tr>
+    <th class="t_title">
+      <a href="javascript:void(0)" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+        Name
+        <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+        <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+      </a>
+    </th>
+    <th class="t_title">Description</th>
+    <th class="t_title">Local IP</th>
+    <th class="t_title">Local Port</th>
+    <th class="t_title">Remote IP</th>
+    <th class="t_title">Remote Port</th>
+    <th class="t_title">Passive</th>
+    <th class="t_title">Heartbeat</th>
+    <th class="t_title">Action</th>
+  </tr>
+
+  <tr>
+    <td class="t_value">
+      <input type="text" name="name" ng-model="new_sctp.name">
+    </td>
+    <td class="t_value">
+      <input type="text" name="description" ng-model="new_sctp.description">
+    </td>
+    <td class="t_value">
+      <textarea name="local_ip" ng-model="new_sctp.local_ip"></textarea>
+    </td>
+    <td class="t_value">
+      <input type="text" name="local_port" ng-model="new_sctp.local_port">
+    </td>
+    <td class="t_value">
+      <textarea name="remote_ip" ng-model="new_sctp.remote_ip"></textarea>
+    </td>
+    <td class="t_value">
+      <input type="text" name="remote_port" ng-model="new_sctp.remote_port">
+    </td>
+    <td class="t_value">
+      NO
+    </td>
+    <td class="t_value">
+      30
+    </td>
+    <td class="t_value">
+      <button class="btn btn-primary" ng-click="add_sctp_object()">Add</button>
+    </td>
+  </tr>
+
+  <tr ng-repeat = 'sctp_object in sctp_objects | orderBy:sortType:sortReverse as sctp_objects'>
+    <td class="t_value">
+      <!-- <input type="text" name="group" ng-model="sctp_object.name" ng-disabled="!sctp_object.editing"> -->
+      <input type="text" name="group" ng-model="sctp_object.name" ng-disabled="true">
+    </td>
+    <td class="t_value">
+      <input type="text" name="group" ng-model="sctp_object.description" ng-disabled="!sctp_object.editing">
+    </td>
+    <td class="t_value">
+      <textarea ng-disabled="!sctp_object.editing" ng-model='sctp_object["local-ip"]'></textarea>
+    </td>
+    <td class="t_value">
+      <input type="text" name="group" ng-model="sctp_object['local-port']" ng-disabled="!sctp_object.editing">
+    </td>
+    <td class="t_value">
+      <textarea ng-disabled="!sctp_object.editing" ng-model='sctp_object["remote-ip"]'></textarea>
+    </td>
+    <td class="t_value">
+      <input type="text" name="group" ng-model="sctp_object['remote-port']" ng-disabled="!sctp_object.editing">
+    </td>
+    <td class="t_value">
+      NO
+    </td>
+    <td class="t_value">
+      30
+    </td>
+    <td class="t_value">
+      <button class="btn btn-primary" ng-disabled = "(sctp_object.available_action == 'stop') || (sctp_object.available_action == 'none')" ng-click = "start(sctp_object)">Start</button>
+
+      <button class="btn btn-primary" ng-disabled = "(sctp_object.available_action == 'start') || (sctp_object.available_action == 'none')" ng-click = "stop(sctp_object)">Stop</button>
+
+      <button class="btn btn-primary edit-button" ng-click = "edit(sctp_object)">{{sctp_object.editing ? 'Update' : 'Edit'}}</button>
+      <button class="btn btn-danger" ng-click = "delete(sctp_object)">Delete</button>
+    </td>
+  </tr>
+</table>
