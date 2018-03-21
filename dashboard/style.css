@@ -75,3 +75,12 @@ a:focus {
   text-decoration: none;
   outline: none;
 }
+
+input[disabled] {
+  background: white;
+  border: none;
+}
+
+.port-input {
+  width: 60px;
+}

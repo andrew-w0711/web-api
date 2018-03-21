@@ -31,13 +31,13 @@
       <textarea name="local_ip" ng-model="new_sctp.local_ip"></textarea>
     </td>
     <td class="t_value">
-      <input type="text" name="local_port" ng-model="new_sctp.local_port">
+      <input type="text" name="local_port" ng-model="new_sctp.local_port" class="port-input" maxlength="5">
     </td>
     <td class="t_value">
       <textarea name="remote_ip" ng-model="new_sctp.remote_ip"></textarea>
     </td>
     <td class="t_value">
-      <input type="text" name="remote_port" ng-model="new_sctp.remote_port">
+      <input type="text" name="remote_port" ng-model="new_sctp.remote_port" class="port-input" maxlength="5">
     </td>
     <td class="t_value">
       NO
@@ -62,13 +62,13 @@
       <textarea ng-disabled="!sctp_object.editing" ng-model='sctp_object["local-ip"]'></textarea>
     </td>
     <td class="t_value">
-      <input type="text" name="group" ng-model="sctp_object['local-port']" ng-disabled="!sctp_object.editing">
+      <input type="text" name="group" ng-model="sctp_object['local-port']" ng-disabled="!sctp_object.editing" class="port-input" maxlength="5">
     </td>
     <td class="t_value">
       <textarea ng-disabled="!sctp_object.editing" ng-model='sctp_object["remote-ip"]'></textarea>
     </td>
     <td class="t_value">
-      <input type="text" name="group" ng-model="sctp_object['remote-port']" ng-disabled="!sctp_object.editing">
+      <input type="text" name="group" ng-model="sctp_object['remote-port']" ng-disabled="!sctp_object.editing" class="port-input" maxlength="5">
     </td>
     <td class="t_value">
       NO

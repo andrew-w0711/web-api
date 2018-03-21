@@ -1,7 +1,7 @@
 app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q, $timeout, $location) {
   var api_host = 'http://estp.fink.org:8082';
 
-  $scope.session_key = localStorageService.get('session_key')
+  $scope.session_key = localStorageService.get('session_key');
   $scope.sctp_objects = [];
 
   $scope.sortType     = 'name';
@@ -60,8 +60,6 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
               $scope.sctp_objects[i].available_action = 'stop';
             }
           }
-          console.log($scope.sctp_objects);
-
         }, function (err) {
           console.log(err);
         })
@@ -83,12 +81,12 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
     if(!$scope.new_sctp) {
       alert('Fill all fields');
     } else {
-      if(!$scope.new_sctp.name || !$scope.new_sctp.description || !$scope.new_sctp.local_ip || !$scope.new_sctp.local_port || !$scope.new_sctp.remote_ip || !$scope.new_sctp.remote_port) {
+      if(!$scope.new_sctp.name || !$scope.new_sctp.local_ip || !$scope.new_sctp.local_port || !$scope.new_sctp.remote_ip || !$scope.new_sctp.remote_port) {
         alert('Fill all fields');
       } else {
         var remote_ip = $scope.new_sctp.remote_ip.split('\n').join(';');
         var local_ip = $scope.new_sctp.local_ip.split('\n').join(';');
-        var description = $scope.new_sctp.description.split(' ').join('+');
+        var description = $scope.new_sctp.description ? $scope.new_sctp.description.split(' ').join('+') : '';
 
         // Add a new SCTP object
         $http.get(api_host + '/api/sctp-add?session-key=' + $scope.session_key +'&name=' + $scope.new_sctp.name + '&local-ip=' + local_ip + '&remote-ip=' + remote_ip + '&local-port=' + $scope.new_sctp.local_port +'&remote-port=' + $scope.new_sctp.remote_port + '&description=' + description).then(function (res) {
@@ -153,7 +151,7 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
       if(flag == true) {
         console.log('No data is updated');
       } else {
-        if(!object.description || !object['local-ip'] || !object['local-port'] || !object["remote-ip"] || !object["remote-port"]) {
+        if(!object['local-ip'] || !object['local-port'] || !object["remote-ip"] || !object["remote-port"]) {
           alert('Fill all fields');
         } else {
 
@@ -173,7 +171,7 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
           console.log('Updating..');
 
           $http.get(api_request).then(function (response) {
-            console.log(response);
+            console.log('Updated.');
           }, function (error) {
             console.log(error);
           });
