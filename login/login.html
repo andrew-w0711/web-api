@@ -2,7 +2,7 @@
   <div class="box">
     <h1>Login</h1>
     <input type="text" name="username" placeholder="username" class="textbox" ng-model="username" />
-    <input type="password" name="password" placeholder="password" class="textbox" ng-model="password" />
+    <input type="password" name="password" placeholder="password" class="textbox" ng-model="password" ng-keyup="$event.keyCode == 13 ? login() : null" />
     <div class="login-button" ng-click="login()">Sign In</div>
     <!-- <div id="btn2" ng-click="register()">Sign Up</div> -->
 
