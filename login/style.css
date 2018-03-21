@@ -32,7 +32,7 @@ h1{
   width:300px;
   border-radius:6px;
   margin: 0 auto 0 auto;
-  padding:0px 0px 70px 0px;
+  padding:0px 0px 20px 0px;
   border: #2980b9 4px solid; 
 }
 
@@ -68,7 +68,7 @@ h1{
   cursor: pointer;
   margin-top:20px;
   margin-bottom:20px;
-  float:left;
+  /*float:left;*/
   /*margin-left:16px;*/
   margin-left: 80px;
   font-weight:800;

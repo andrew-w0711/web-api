@@ -9,7 +9,7 @@ app.controller('loginCtrl', function ($scope, $http, $timeout, $location, localS
           $scope.message = 'Login Successfully';
           $timeout(function () {
             $location.url('/dashboard');
-          },500);
+          },1000);
         } else {
           $scope.notification = 'error';
           $scope.message = "Username and Password don't match";  
