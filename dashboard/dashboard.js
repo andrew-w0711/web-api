@@ -5,7 +5,11 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
   $scope.sctp_objects = [];
 
   $scope.sortType     = 'name';
-  $scope.sortReverse  = true;
+  $scope.sortReverse  = false;
+
+  $scope.new_sctp = {};
+  $scope.new_sctp.passive = 'default';
+  $scope.new_sctp.heartbeat = 30;
 
   var possible_actions_list = [];
 
@@ -34,7 +38,21 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
           }
 
           if(results[i].data.result['description']) {
-            $scope.sctp_objects[i]['description'] = results[i].data.result['description'].split('+').join(' ');  
+            $scope.sctp_objects[i]['description'] = results[i].data.result['description'].split('+').join(' ');
+          }
+
+          if(results[i].data.result.hasOwnProperty('passive')) {
+            if(results[i].data.result['passive'] == true) {
+              $scope.sctp_objects[i]['passive'] = 'true';
+            } else {
+              $scope.sctp_objects[i]['passive'] = 'false';
+            }
+          } else {
+            $scope.sctp_objects[i]['passive'] = 'default';
+          }
+
+          if(!results[i].data.result['heartbeat']) {
+            $scope.sctp_objects[i]['heartbeat'] = 30;
           }
 
           possible_actions_list.push($http.get(api_host + '/api/sctp-action?session-key=' + $scope.session_key + '&name=' + $scope.sctp_objects[i].name + '&action=action-list'));
@@ -88,10 +106,32 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
         var local_ip = $scope.new_sctp.local_ip.split('\n').join(';');
         var description = $scope.new_sctp.description ? $scope.new_sctp.description.split(' ').join('+') : '';
 
+        var api_request = api_host + '/api/sctp-add?session-key=' + $scope.session_key +'&name=' + $scope.new_sctp.name + '&local-ip=' + local_ip + '&remote-ip=' + remote_ip + '&local-port=' + $scope.new_sctp.local_port +'&remote-port=' + $scope.new_sctp.remote_port + '&description=' + description;
+
+        if($scope.new_sctp.passive != 'default') {
+          api_request = api_request + '&passive=' + $scope.new_sctp.passive;
+        }
+
+        if($scope.new_sctp.heartbeat != 30) {
+          api_request = api_request + '&heartbeat=' + $scope.new_sctp.heartbeat;
+        }
+
         // Add a new SCTP object
-        $http.get(api_host + '/api/sctp-add?session-key=' + $scope.session_key +'&name=' + $scope.new_sctp.name + '&local-ip=' + local_ip + '&remote-ip=' + remote_ip + '&local-port=' + $scope.new_sctp.local_port +'&remote-port=' + $scope.new_sctp.remote_port + '&description=' + description).then(function (res) {
+        $http.get(api_request).then(function (res) {
 
           $scope.new_sctp = {};
+          $scope.new_sctp.passive = 'default';
+          $scope.new_sctp.heartbeat = 30;
+
+          if(res.data.result.hasOwnProperty('passive')) {
+            if(res.data.result['passive'] == true) {
+              res.data.result['passive'] = 'true';
+            } else {
+              res.data.result['passive'] = 'false';
+            }
+          } else {
+            res.data.result['passive'] = 'default';
+          }
 
           $scope.sctp_objects.push(res.data.result);
 
@@ -100,9 +140,10 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
           $scope.sctp_objects[$scope.sctp_objects.length - 1]['description'] = $scope.sctp_objects[$scope.sctp_objects.length - 1]['description'].split('+').join(' ');
 
           $scope.sctp_objects[$scope.sctp_objects.length - 1]['available_action'] = 'none';
+
         }, function (error) {
           console.log(error)
-        })
+        });
       }
     }
   };
@@ -116,7 +157,7 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
       } else {
         var name = object.name;
 
-        // // Delete SCTP object
+        // Delete SCTP object
         $http.get(api_host + '/api/sctp-delete?session-key=' + $scope.session_key + '&name=' + name).then(function (response) {
           if(response.data.error) {
             alert('Error in deleting a sctp object. Try again later!');
@@ -159,23 +200,32 @@ app.controller('dashboardCtrl', function ($scope, localStorageService, $http, $q
 
           for(key in $scope.temp_data) {
             if((key != 'available_action') && (key != 'editing')) {
+              if($scope.temp_data.name != object.name) {
+                
+              }
+
               if($scope.temp_data[key] != object[key]){
                 if((key == 'local-ip') || (key == 'remote-ip')) {
                   api_request = api_request + '&' + key +'=' + object[key].split('\n').join(';');
                 } else {
-                  api_request = api_request + '&' + key +'=' + object[key];
+                  if(key =='name') {
+                    api_request = api_request + '&newname=' + object.name;
+                  } else if(key == 'description') {
+                    api_request = api_request + '&description=' + object.description.split(' ').join('+');
+                  } else {
+                    api_request = api_request + '&' + key +'=' + object[key];
+                  }
                 }
               }
             }
           }
           console.log('Updating..');
-
+          console.log(api_request);
           $http.get(api_request).then(function (response) {
             console.log('Updated.');
           }, function (error) {
             console.log(error);
           });
-
         }
       }
     }

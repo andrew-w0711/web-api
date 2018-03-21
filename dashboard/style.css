@@ -15,6 +15,7 @@ table
   border: solid black; 
   border-width: 1px;
   border-collapse: collapse; 
+  margin: 0 auto;
 }
 
 .t_title
@@ -76,11 +77,19 @@ a:focus {
   outline: none;
 }
 
-input[disabled] {
+.port-input {
+  width: 60px;
+}
+
+input[disabled], textarea[disabled] {
   background: white;
   border: none;
 }
 
-.port-input {
-  width: 60px;
+select[disabled] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+  border: none;
 }

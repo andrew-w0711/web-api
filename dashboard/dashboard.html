@@ -40,10 +40,14 @@
       <input type="text" name="remote_port" ng-model="new_sctp.remote_port" class="port-input" maxlength="5">
     </td>
     <td class="t_value">
-      NO
+      <select ng-model='new_sctp.passive'>
+        <option value="default">Default</option>
+        <option value="true">YES</option>
+        <option value="false">NO</option>
+      </select>
     </td>
     <td class="t_value">
-      30
+      <input type="text" name="heartbeat" ng-model="new_sctp.heartbeat">
     </td>
     <td class="t_value">
       <button class="btn btn-primary" ng-click="add_sctp_object()">Add</button>
@@ -52,8 +56,7 @@
 
   <tr ng-repeat = 'sctp_object in sctp_objects | orderBy:sortType:sortReverse as sctp_objects'>
     <td class="t_value">
-      <!-- <input type="text" name="group" ng-model="sctp_object.name" ng-disabled="!sctp_object.editing"> -->
-      <input type="text" name="group" ng-model="sctp_object.name" ng-disabled="true">
+      <input type="text" name="group" ng-model="sctp_object.name" ng-disabled="!sctp_object.editing">
     </td>
     <td class="t_value">
       <input type="text" name="group" ng-model="sctp_object.description" ng-disabled="!sctp_object.editing">
@@ -71,10 +74,14 @@
       <input type="text" name="group" ng-model="sctp_object['remote-port']" ng-disabled="!sctp_object.editing" class="port-input" maxlength="5">
     </td>
     <td class="t_value">
-      NO
+      <select ng-model="sctp_object.passive" ng-disabled="!sctp_object.editing">
+        <option value="default">Default</option>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
     </td>
     <td class="t_value">
-      30
+      <input type="text" name="group" ng-model="sctp_object.heartbeat" ng-disabled="!sctp_object.editing" class="port-input" maxlength="5">
     </td>
     <td class="t_value">
       <button class="btn btn-primary" ng-disabled = "(sctp_object.available_action == 'stop') || (sctp_object.available_action == 'none')" ng-click = "start(sctp_object)">Start</button>
